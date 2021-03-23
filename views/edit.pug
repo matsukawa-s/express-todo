@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h3.my-3 タスクの編集
+  form(method="post", action=`/tasks/edit/${task.taskId}`)
+    input(type="hidden" name="_csrf" value!=csrfToken)
+    div.form-group
+      h5 タスク名
+      input(type="text" name="title" value=task.title).form-control
+    div.form-group
+      h5 詳細
+      textarea(name="description").form-control #{task.description}
+    div
+      button(type="submit").btn.btn-info タスクの編集を完了する

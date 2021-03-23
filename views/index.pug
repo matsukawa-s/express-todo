@@ -1,0 +1,79 @@
+extends layout
+
+block content
+  div.jumbotron.my-3
+    h1.display-4 TODOアプリ
+    p.lead GitHubで認証後、タスクを作成できるようになります。
+  if user
+    h3.mt-2 新しくタスクを作成する
+    form(method="post", action="tasks/create").p-3.bg-light
+      input(type="hidden" name="_csrf" value!=csrfToken)
+      div.form-group
+        h5 タスク名
+        input(type="text" name="title").form-control.form-control-sm
+      div.form-group
+        h5 詳細
+        textarea(name="description").form-control.form-control-sm
+      //- h5 期限
+      //- div.form-row.p-0
+      //-   div.col-sm-4
+      //-     //- label.inputYear
+      //-     select(name="year")#year.form-control.form-control-sm
+      //-   div.col-sm-4
+      //-     //- label.inputMonth
+      //-     select(name="month")#month.form-control.form-control-sm
+      //-       option ---- 
+      //-       option(value="1") 1
+      //-       option(value="2") 2
+      //-       option(value="3") 3
+      //-       option(value="4") 4
+      //-       option(value="5") 5
+      //-       option(value="6") 6
+      //-       option(value="7") 7
+      //-       option(value="8") 8
+      //-       option(value="9") 9
+      //-       option(value="10") 10
+      //-       option(value="11") 11
+      //-       option(value="12") 12
+      //-   div.col-sm-4 
+      //-     //- label.inputDate
+      //-     select(name="date")#date.form-control.form-control-sm
+      //-       option ----
+      button(type="submit").btn.btn-info.mt-2 タスクを作成する
+    h3.my-2 タスク一覧
+    - var hasTask = tasks.length > 0
+    if hasTask
+      div.row.mx-0
+        each task in tasks 
+          div.p-1.col-lg-3.col-md-4.col-sm-6
+            //- div(class = task.isDone ? "bg-success text-white" : "").card.px-0.h-100
+            div.card.px-0.h-100
+              div.card-header.d-flex.justify-content-between.mx-0
+                div(class = task.isDone ? "textdecoration_linethrough" : "") #{task.title}
+                //- div
+                //-   form(action=`/tasks/update/${task.taskId}`, method="post") 
+                //-     input(type="checkbox",onChange="submit()", checked=(task.isDone))
+              div.card-body
+
+                p.card-text #{task.description}
+              div.card-footer.p-1
+                div.row.mx-0
+                  div.col-6.p-0
+                    form(action=`/tasks/update/${task.taskId}`, method="post")
+                      input(type="hidden" name="_csrf" value!=csrfToken)
+                      if task.isDone 
+                        button(type="submit").btn.btn-light.w-100 戻す
+                      else 
+                        button(type="submit").btn.btn-success.w-100 完了にする                        
+                  div.col-3.px-1
+                    a(href=`/tasks/edit/${task.taskId}`).btn.btn-primary.w-100
+                      i.far.fa-edit
+                  div.col-3.p-0
+                    form(action=`/tasks/delete/${task.taskId}`, method="post")#task_delete_form.text-right
+                      input(type="hidden" name="_csrf" value!=csrfToken)
+                      button(type="submit").btn.btn-danger.w-100
+                        i.far.fa-trash-alt
+    else 
+      div タスクがありません
+  //- else
+  //-   a(href="/login").btn.btn-primary ログイン
