@@ -8,6 +8,25 @@ const { route } = require(".");
 const csrf = require("csurf");
 const csrfProtection = csrf({ cookie: true });
 
+router.get("/:taskId", authenticationEnsurer, (req, res, next) => {
+  Task.findOne({
+    where: {
+      taskId: req.params.taskId,
+    },
+  }).then((task) => {
+    if (task) {
+      res.render("task", {
+        task: task,
+        user: req.user,
+      });
+    } else {
+      const err = new Error("指定されたタスクは見つかりません");
+      err.status = 404;
+      next(err);
+    }
+  });
+});
+
 router.post(
   "/create",
   authenticationEnsurer,

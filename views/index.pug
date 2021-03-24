@@ -9,8 +9,8 @@ block content
     form(method="post", action="tasks/create").p-3.bg-light
       input(type="hidden" name="_csrf" value!=csrfToken)
       div.form-group
-        h5 タスク名
-        input(type="text" name="title").form-control.form-control-sm
+        h5 タスク名(必須)
+        input(type="text" name="title" required).form-control.form-control-sm
       div.form-group
         h5 詳細
         textarea(name="description").form-control.form-control-sm
@@ -49,13 +49,15 @@ block content
             //- div(class = task.isDone ? "bg-success text-white" : "").card.px-0.h-100
             div.card.px-0.h-100
               div.card-header.d-flex.justify-content-between.mx-0
-                div(class = task.isDone ? "textdecoration_linethrough" : "") #{task.title}
+                div.task_title(class = task.isDone ? "textdecoration_linethrough" : "") #{task.title}
+                div
+                  a(href=`/tasks/${task.taskId}`).fa-chevron-right-design.m-auto.btn.btn-light
+                    i.fas.fa-chevron-right
                 //- div
                 //-   form(action=`/tasks/update/${task.taskId}`, method="post") 
                 //-     input(type="checkbox",onChange="submit()", checked=(task.isDone))
               div.card-body
-
-                p.card-text #{task.description}
+                p.card-text.description_height #{task.description}
               div.card-footer.p-1
                 div.row.mx-0
                   div.col-6.p-0
@@ -69,7 +71,7 @@ block content
                     a(href=`/tasks/edit/${task.taskId}`).btn.btn-primary.w-100
                       i.far.fa-edit
                   div.col-3.p-0
-                    form(action=`/tasks/delete/${task.taskId}`, method="post")#task_delete_form.text-right
+                    form(action=`/tasks/delete/${task.taskId}`, method="post").task_delete_form.text-right
                       input(type="hidden" name="_csrf" value!=csrfToken)
                       button(type="submit").btn.btn-danger.w-100
                         i.far.fa-trash-alt

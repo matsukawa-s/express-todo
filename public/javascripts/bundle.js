@@ -113,7 +113,7 @@ global.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 //   (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
 (function ($) {
-  $("#task_delete_form").submit(function () {
+  $(".task_delete_form").submit(function () {
     return confirm("本当に削除してよろしいですか？");
   }); //   const today = new Date();
   //   const year = today.getFullYear();
